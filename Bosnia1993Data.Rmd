@@ -1,0 +1,37 @@
+---
+title: "Conflicts Bosnia 1993"
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+# Upload dataset
+
+bosnia_conflict_1993 <- read_csv('Bosnia1993Data.csv')
+```
+
+```{r}
+# Create new table with sum of the fatalities for all conflicts
+
+total_fatalities <- bosnia_conflict_1993 %>%
+  summarise(best_total_fatalities = sum(best_estimate),
+  highest_reliable_total_fatalities = sum(highest_reliable_estimate),
+  lowest_reliable_total_fatalities = sum(lowest_reliable_estimate))
+
+```
+
+```{r}
+# Create visual
+
+ggplot(data=total_fatalities) +
+  geom_point(mapping=aes(x='', y=best_total_fatalities), fill='purple') +
+  geom_errorbar(mapping=aes(x='', y=best_total_fatalities, ymin=lowest_reliable_total_fatalities, ymax=highest_reliable_total_fatalities), width=0.2) +
+    xlab('Estimate') +
+    ylab('Fatalities') +
+    ggtitle('Fatalities Estimate')
+
+```
